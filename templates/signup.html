@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<body class="text-center">
+    <main class="form-signin w-100 m-auto">
+        {% if token %}
+        <style>
+            .token {
+                display: flex;
+                align-items: center;
+            }
+            .save-icon:hover {
+                cursor: pointer;
+            }
+        </style>
+        <div class="token">
+            <div>
+                <input type="text" class="form-control form-floating" id="token" value="{{ token }}" disabled>
+            </div>
+            <div class="save-icon" onclick="saveToken()">
+                <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon m-2">
+                    <path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+            </div>
+        </div>
+        {% else %}
+        <form action="{% url 'account:signup' %}" id="signup" method="post">
+            {% csrf_token %}
+            <img class="mb-4" src="{% static 'images/logo.png' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+    
+            <div class="form-floating">
+                <input
+                    id="floatingInput"
+                    name="username"
+                    type="text"
+                    class="form-control"
+                    required
+                    placeholder="Username"
+                    autocomplete="off"
+                >
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+                <input
+                    id="floatingPassword"
+                    name="password"
+                    type="password"
+                    class="form-control"
+                    required
+                    placeholder="Password"
+                    autocomplete="off"
+                >
+                <label for="floatingPassword">Password</label>
+            </div>
+
+            <p id="error-message" class="text-danger">{{ error }}</p>
+
+            <div class="w-100 btn btn-lg btn-primary" onclick="submit()">Sign up</div>
+            <p class="mt-5 mb-3 text-muted">&copy; 2022 OVAAS</p>
+        </form>
+        {% endif %}
+    </main>
+    <script>
+        function saveToken() {
+            navigator.clipboard.writeText(document.getElementById("token").value);
+        }
+
+        function submit() {
+            // const usernameRegex = /^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$/;
+            // // passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            // const username = document.getElementById("signup").username.value;
+            // const password = document.getElementById("signup").password.value;
+            // console.log(usernameRegex.test(username));
+            // document.getElementById("signup").password.classList.remove("is-invalid");
+
+            // if (!usernameRegex.test(username)) {
+            //     document.getElementById("signup").username.classList.add("is-invalid");
+            //     document.getElementById("signup").username.classList.add("for-error-border");
+            //     document.getElementById("error-message").innerHTML = "Username must be at least 4 characters long and can contain only letters, numbers, and the following characters.";
+            //     return;
+            // }
+            // document.getElementById("error-message").innerHTML = "";
+            // document.getElementById("signup").username.classList.remove("is-invalid");
+            // document.getElementById("signup").username.classList.remove("for-error-border");
+
+            // if (!passwordRegex.test(password)) {
+            //     document.getElementById("signup").password.classList.add("is-invalid");
+            //     document.getElementById("error-message").innerHTML = "Password must be at least 8 characters long and can contain only letters, numbers, and the following characters: @$!%*?&";
+            //     return;
+            // }
+            // document.getElementById("signup").password.classList.remove("is-invalid");
+            document.getElementById("signup").submit();
+        }
+    </script>
+</body>
+{% endblock content %}

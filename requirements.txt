@@ -1,0 +1,4 @@
+azure-cli
+Django
+python-dotenv
+whitenoise
