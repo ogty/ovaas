@@ -37,6 +37,7 @@ Delete = TypedDict("Delete", {
     "resource_group": str,
 })
 
+
 class FunctionApp:
 
     def __init__(self) -> None:
@@ -50,7 +51,8 @@ class FunctionApp:
     def _generate_options(self, settings: dict) -> List[str]:
         keys = ["--%s" % k.replace('_', '-') for k in [*settings.keys()]]
         values = [*settings.values()]
-        options = ["%s %s" % (option, arg) for option, arg in zip(keys, values)]
+        # Flatten 2D array to one dimension
+        options = sum([[option, arg] for option, arg in zip(keys, values)], [])
         return options
 
     def deployment(self, settings: Deployment) -> FunctionApp:
@@ -68,5 +70,5 @@ class FunctionApp:
         self.options = self._generate_options(settings)
         return self
 
-    async def run(self) -> None:
-        await subprocess.run(self.commands)
+    def run(self) -> None:
+        subprocess.run(self.command + self.options)

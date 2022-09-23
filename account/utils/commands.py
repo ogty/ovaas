@@ -12,12 +12,12 @@ load_dotenv()
 STORAGE = os.environ["STORAGE"]
 LOCATION = os.environ["LOCATION"]
 PYTHON_VERSION = os.environ["PYTHON_VERSION"]
-RESOURCE_GROUP = os.environ["GLOBALLY_UNIQUE_PREFIX"]
+RESOURCE_GROUP = os.environ["RESOURCE_GROUP"]
 FUNCTION_VERSION = os.environ["FUNCTION_VERSION"]
 GLOBALLY_UNIQUE_PREFIX = os.environ["GLOBALLY_UNIQUE_PREFIX"]
 
 
-async def deploy(token: str, username: str):
+def deploy(token: str, username: str) -> None:
     app_name = "%s-%s" % (GLOBALLY_UNIQUE_PREFIX, username)
     zip_path = f"media/{token}.zip"
 
@@ -33,7 +33,7 @@ async def deploy(token: str, username: str):
     subprocess.run(["rm", zip_path])
 
 
-def create_function(username: str):
+def create_function(username: str) -> None:
     app_name = "%s-%s" % (GLOBALLY_UNIQUE_PREFIX, username)
 
     settings = Create(

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import signup, login, index, logout, update_token
+from .views import signup, login, index, logout
 
 
 app_name = "account"
@@ -9,5 +9,4 @@ urlpatterns = [
     path("signup/", signup, name="signup"),
     path("login/", login, name="login"),
     path("logout/", logout, name="logout"),
-    path("update_token/", update_token, name="update_token"),
 ]

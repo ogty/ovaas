@@ -9,15 +9,11 @@ from .models import CustomUser
 
 
 def index(request: HttpRequest) -> HttpRequest:
-    if request.user.is_authenticated:
-        if request.method != "POST":
-            return render(request, "index.html", {})
-
+    if request.method == "POST" and request.user.is_authenticated:
         zipped_file = request.FILES["zip"]
         with open(f"media/{request.user.token}.zip", "wb+") as destination:
             for chunk in zipped_file.chunks():
                 destination.write(chunk)
-
         deploy(request.user.token, request.user.username)
 
     return render(request, "index.html", {})
@@ -67,12 +63,4 @@ def logout(request: HttpRequest) -> HttpResponseRedirect:
 def delete_user(request: HttpRequest) -> HttpResponseRedirect:
     delete_function(request.user.username)
     request.user.delete()
-    return redirect('/')
-
-
-def update_token(request: HttpRequest) -> HttpResponseRedirect:
-    user = CustomUser.objects.get(username=request.user.username)
-    user.token = generate_random_token()
-    user.save()
-
     return redirect('/')
